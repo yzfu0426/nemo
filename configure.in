@@ -39,6 +39,13 @@ dnl ---			Nemo version - just for fun for now
 NEMOVER="`cat VERSION`"
 AC_SUBST(NEMOVER)
 
+dnl ---                 Create needed libraries for next step
+for i in bin lib ojb; do
+ if [ ! -e $i ]; then
+   mkdir $i
+ fi
+done
+
 dnl ----                Architecture stuff we need to know
 AC_CANONICAL_HOST
 echo "Found CANONICAL_HOST = $host_os"
@@ -326,6 +333,7 @@ case $host_os in
     MACOS_LIBS="-lcc_dynamic"
     ;;
   sol*)
+#   -PIC ??
     CCSHARED="-KPIC"
     ;;
 esac
@@ -785,11 +793,6 @@ if test -d "$NEMODAT"; then
   echo "*** Warning: NEMO=$NEMO, maybe you are running NEMO already"
   echo "*** you probably should source $NEMO/nemo_end"
 fi
-
-
-mkdir bin lib obj
-
-
 
 AC_OUTPUT(NEMORC.gen Makefile makedefs nemo_start nemo.pl)
 
