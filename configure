@@ -312,7 +312,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS NEMO NEMOHOST NEMO_LIBS NEMO_CFLAGS NEMO_FFLAGS WARNING NEMOVER build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX AWK INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE RANLIB ac_ct_RANLIB X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS XLIBS XINCS GLLIBS F77 FFLAGS ac_ct_F77 FLIBS F77_CMAIN_FFLAGS CCSHARED PGPLOT_DIR LOADOBJ_MACH LOADOBJ_LIBS MATH_LIBS HDF_INC HDF_LIB CFITSIO_INC CFITSIO_LIB PVM_LIB PVM_INC MIRIAD_INC MIRIAD_LIB GSL_CONFIG GSL_CFLAGS GSL_LIBS TCL_CFLAGS TCL_LIBS RDL_LIBS LIBOBJS YAPP_NAME YAPP_LIBS YAPP_DEF LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS NEMO NEMOHOST NEMO_LIBS NEMO_CFLAGS NEMO_FFLAGS WARNING NEMOVER build build_cpu build_vendor build_os host host_cpu host_vendor host_os CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX AWK INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE RANLIB ac_ct_RANLIB X_CFLAGS X_PRE_LIBS X_LIBS X_EXTRA_LIBS XLIBS XINCS GLLIBS F77 FFLAGS ac_ct_F77 FLIBS F77_CMAIN_FFLAGS CCSHARED MACOS_LIBS PGPLOT_DIR LOADOBJ_MACH LOADOBJ_LIBS MATH_LIBS HDF_INC HDF_LIB CFITSIO_INC CFITSIO_LIB PVM_LIB PVM_INC MIRIAD_INC MIRIAD_LIB GSL_CONFIG GSL_CFLAGS GSL_LIBS TCL_CFLAGS TCL_LIBS RDL_LIBS LIBOBJS YAPP_NAME YAPP_LIBS YAPP_DEF LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -8564,22 +8564,27 @@ echo "$as_me: WARNING: problems fortran-c interface" >&2;}
 
 
 if test "$GCC" = "yes"; then
-  NEMO_CFLAGS="$NEMO_CFLAGS -rdynamic -fwritable-strings $gcov_flag"
+  NEMO_CFLAGS="$NEMO_CFLAGS -fwritable-strings $gcov_flag"
 fi
 NEMO_CFLAGS="$NEMO_CFLAGS $prec_flag"
 
 
-CCSHARED=""
+CCSHARED="-fpic"
+
+MACOS_LIBS=""
 echo "$as_me:$LINENO: checking what flags we need to created shared libs" >&5
 echo $ECHO_N "checking what flags we need to created shared libs... $ECHO_C" >&6
-CCSHARED=-fpic
 
 case $host_os in
   linux*|Linux*)
     CCSHARED="-fpic"
+    if test "$GCC" = "yes"; then
+       NEMO_CFLAGS="$NEMO_CFLAGS -rdynamic"
+    fi
     ;;
   darwin*)
-    CCSHARED="-fpic -fno-common"
+    CCSHARED="-fPIC -fno-common"
+    MACOS_LIBS="-lcc_dynamic"
     ;;
   sol*)
     CCSHARED="-KPIC"
@@ -8587,6 +8592,8 @@ case $host_os in
 esac
 echo "$as_me:$LINENO: result: $CCSHARED" >&5
 echo "${ECHO_T}$CCSHARED" >&6
+
+
 
 
 
@@ -13846,6 +13853,7 @@ s,@ac_ct_F77@,$ac_ct_F77,;t t
 s,@FLIBS@,$FLIBS,;t t
 s,@F77_CMAIN_FFLAGS@,$F77_CMAIN_FFLAGS,;t t
 s,@CCSHARED@,$CCSHARED,;t t
+s,@MACOS_LIBS@,$MACOS_LIBS,;t t
 s,@PGPLOT_DIR@,$PGPLOT_DIR,;t t
 s,@LOADOBJ_MACH@,$LOADOBJ_MACH,;t t
 s,@LOADOBJ_LIBS@,$LOADOBJ_LIBS,;t t

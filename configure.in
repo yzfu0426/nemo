@@ -301,29 +301,37 @@ fi
 dnl Fortran/C linkeage : defines F77_CMAIN_FFLAGS
 ACX_F77_CMAIN_FFLAGS([],[AC_MSG_WARN([problems fortran-c interface])])
 
-dnl Solaris gcc doesn't know -rdynamics, linux needs it for dlopen()
+dnl MacOS (darwin) needs -lcc_dynamic
+dnl Only linux wants -rdynamic, for dlopen()
 if test "$GCC" = "yes"; then
-  NEMO_CFLAGS="$NEMO_CFLAGS -rdynamic -fwritable-strings $gcov_flag"
+  NEMO_CFLAGS="$NEMO_CFLAGS -fwritable-strings $gcov_flag"
 fi
 NEMO_CFLAGS="$NEMO_CFLAGS $prec_flag"
 
 AC_SUBST(CCSHARED)
-CCSHARED=""
+CCSHARED="-fpic"
+AC_SUBST(MACOS_LIBS)
+MACOS_LIBS=""
 AC_MSG_CHECKING(what flags we need to created shared libs)
-CCSHARED=-fpic  
 
 case $host_os in
   linux*|Linux*)
     CCSHARED="-fpic"
+    if test "$GCC" = "yes"; then
+       NEMO_CFLAGS="$NEMO_CFLAGS -rdynamic" 
+    fi				   
     ;;
   darwin*)
-    CCSHARED="-fpic -fno-common"
+    CCSHARED="-fPIC -fno-common"
+    MACOS_LIBS="-lcc_dynamic"
     ;;
   sol*)
     CCSHARED="-KPIC"
     ;;
 esac
 AC_MSG_RESULT([$CCSHARED])
+
+
 
 dnl ---------------------------------------------------------------------------
 dnl PGPLOT detection: (NEMO allows PGPLOT to be built internally in $NEMO/lib)
