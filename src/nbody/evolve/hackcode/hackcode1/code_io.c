@@ -7,6 +7,7 @@
  *	20-may-92 extra forward decl for SGI
  *	26-jun-92 fixed allocate decl. once more ... ???   	PJT
  *	24-mar-94 ansi fixes
+ *      29-mar-04 prototypes
  */
 
 #include "code.h"
@@ -31,7 +32,7 @@ extern bool scanopt(string,string);
  * INPUTDATA: read initial conditions from input file.
  */
 
-inputdata(string file)
+void inputdata(string file)
 {
     stream instr;
     int bits;
@@ -60,7 +61,7 @@ inputdata(string file)
 
 local stream outstr;                  /* output stream pointer */
 
-initoutput()
+void initoutput(void)
 {
     printf("\n%s\n\n", headline);               /* print headline, params   */
     printf("%12s%12s%12s%12s\n",
@@ -82,7 +83,7 @@ initoutput()
  * STOPOUTPUT: finish up after a run.
  */
 
-stopoutput()
+void stopoutput(void)
 {
     if (outstr != NULL)
         strclose(outstr);
@@ -105,7 +106,7 @@ local vector cmphase[2];	/* center of mass coordinates */
 
 local bool firstmass = TRUE;	/* if true, output mass data */
 
-output()
+void output(void)
 {
     int nttot, nbavg, ncavg, k, bits;
 
@@ -216,8 +217,7 @@ local void my_put_snap_diagnostics(stream outstr, int *ofptr)
  * SAVESTATE: write current state to disk file.
  */
 
-savestate(file)
-string file;
+void savestate(string file)
 {
     stream str;
 
@@ -249,8 +249,7 @@ string file;
  * RESTORESTATE: restore state from disk file.
  */
 
-restorestate(file)
-string file;
+void restorestate(string file)
 {
     stream str;
     string program, version;

@@ -15,9 +15,9 @@ local real phi0;			/* resulting potential at pos0 */
 local vector acc0;			/* resulting acceleration at pos0 */
 
 /* forward declarations: */
-local walksub();
-local bool subdivp();
-local gravsub();
+local void walksub(nodeptr, real);
+local bool subdivp(nodeptr, real);
+local void gravsub(nodeptr);
 
 void hackgrav(bodyptr p)
 {
@@ -39,9 +39,8 @@ local nodeptr pmem;                     /* for memorized data to be shared */
 local vector dr;			/* between gravsub and subdivp */
 local real drsq;
 
-local gravsub(nodeptr p)                   /* body or cell to interact with */
+local void gravsub(nodeptr p)                   /* body or cell to interact with */
 {
-    double sqrt();
     static real drabs, phii, mor3;
     static vector ai, quaddr;
     static real dr5inv, phiquad, drquaddr;
@@ -91,10 +90,9 @@ void hackwalk(proc sub)				/* routine to do calculation */
  * WALKSUB: recursive routine to do hackwalk operation.
  */
 
-local walksub(nodeptr p,                          /* pointer into body-tree */
-	      real dsq)                              /* size of box squared */
+local void walksub(nodeptr p,                          /* pointer into body-tree */
+		   real dsq)                              /* size of box squared */
 {
-    bool subdivp();
     register nodeptr *pp;
     register int k;
 
@@ -121,9 +119,8 @@ local walksub(nodeptr p,                          /* pointer into body-tree */
  * Side effects: sets pmem, dr, and drsq.
  */
 
-local bool subdivp(p, dsq)
-register nodeptr p;                     /* body/cell to be tested */
-real dsq;                               /* size of cell squared */
+local bool subdivp(nodeptr p,      /* body/cell to be tested */
+		   real dsq)       /* size of cell squared */
 {
     if (Type(p) == BODY)                        /* at tip of tree?          */
         return (FALSE);                         /*   then cant subdivide    */

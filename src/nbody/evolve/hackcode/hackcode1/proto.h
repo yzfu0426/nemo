@@ -4,12 +4,12 @@ void make_testdata(bool cencon);
 void stepsystem(void);
 
 /* code_io.c */
-int inputdata(string file);
-int initoutput(void);
-int stopoutput(void);
-int output(void);
-int savestate(string file);
-int restorestate(string file);
+void inputdata(string file);
+void initoutput(void);
+void stopoutput(void);
+void output(void);
+void savestate(string file);
+void restorestate(string file);
 
 /* grav.c */
 void hackgrav(bodyptr p);
@@ -26,4 +26,4 @@ void write_snapshot(void);
 int maketree(bodyptr btab, int nbody);
 
 /* util.c */
-int pickvec(vector x, int cf);
+void pickvec(vector x, bool cf);
