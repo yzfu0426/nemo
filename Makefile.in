@@ -1,4 +1,4 @@
-VERSION = NEMO V3.2 23-mar-04 PJT
+VERSION = NEMO V3.2 31-mar-04 PJT
 ################################################################################
 # 	$(NEMO)/Makefile: top level Makefile for full NEMO installation
 ################################################################################
@@ -122,6 +122,9 @@ dirs: nemo_start
 	    touch $$i; \
 	    chmod a+w $$i; \
 	fi); done
+	@if [ ! -f include ]; then \
+	    ln -s inc include; \
+	fi
 	@if [ ! -f $(TIMESTAMP) ]; then \
             echo Updating $(TIMESTAMP) file on `date`; \
 	    echo `date` `hostname` `whoami` > $(TIMESTAMP); \
