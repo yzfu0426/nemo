@@ -8,7 +8,7 @@
 #
 
 
-#     check NEMO
+#     check NEMO, bail if not
 if ($?NEMO == 0) then
   echo No NEMO environment present yet
   exit 0
@@ -18,14 +18,14 @@ endif
 
 cd $NEMO
 
-#     check config.status if there was an installation
+#     check config.status if there was an installation, bail if not
 if (! -e config.status) then
    echo NEMO was never installed. Cannot patch this system, 
    echo please cvs update your system first and install it
    exit 0
 endif
 
-#     check if the directories exist
+#     check if the old style directories exist, bail if not
 foreach d (bin lib obj) 
   if (! -d $NEMO/$d/$NEMOHOST) then
     echo No $NEMO/$d/$NEMOHOST, maybe your system was already patched for V3.2
