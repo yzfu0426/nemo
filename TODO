@@ -1,4 +1,4 @@
-for 3.1.2
+for 3.2.0
   - make sure cfitsio stuff is ok in configure
   - the change in get_atable() should mean routines need to work
     on buffered table read better
@@ -8,6 +8,8 @@ for 3.1.2
 	(fmath in potential not needed)
 	(some potential/data not needed)
   - intel linker problems (use different technique to force loading?)
+  - allow a pgplot internal install without running configure twice
+  - get a mini-NEMO going 
 
 --------------------------------------------------------------------------------
 

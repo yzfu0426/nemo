@@ -894,7 +894,7 @@ Optional Packages:
   --with-hdf              force the use of HDF
   --with-ccmalloc         use CCMALLOC for malloc
   --with-x                use the X Window System
-  --with-pgplot-prefix=DIR   Directory where PGPLOT was installed
+  --with-pgplot-prefix=DIR   Directory where PGPLOT was installed, aka PGPLOT_DIR
   --with-hdf-prefix=PFX     Prefix where HDF was installed
   --with-cfitsio-prefix=PFX
                           CFITSIO installation prefix (default: $cfdefault)
@@ -7499,6 +7499,7 @@ echo "$as_me: WARNING: pexut.a is required when using PEX" >&2;}
                         { { echo "$as_me:$LINENO: error: $PEXUT_LIB is not readable" >&5
 echo "$as_me: error: $PEXUT_LIB is not readable" >&2;}
    { (exit 1); exit 1; }; }
+
                 fi
         fi
 
@@ -7745,7 +7746,7 @@ fi
 
 
 # Provide some information about the compiler.
-echo "$as_me:7748:" \
+echo "$as_me:7749:" \
      "checking for Fortran 77 compiler version" >&5
 ac_compiler=`set X $ac_compile; echo $2`
 { (eval echo "$as_me:$LINENO: \"$ac_compiler --version </dev/null >&5\"") >&5
@@ -7915,7 +7916,7 @@ _ACEOF
 # flags.
 ac_save_FFLAGS=$FFLAGS
 FFLAGS="$FFLAGS $ac_verb"
-(eval echo $as_me:7918: \"$ac_link\") >&5
+(eval echo $as_me:7919: \"$ac_link\") >&5
 ac_f77_v_output=`eval $ac_link 5>&1 2>&1 | grep -v 'Driving:'`
 echo "$ac_f77_v_output" >&5
 FFLAGS=$ac_save_FFLAGS
@@ -7994,7 +7995,7 @@ _ACEOF
 # flags.
 ac_save_FFLAGS=$FFLAGS
 FFLAGS="$FFLAGS $ac_cv_prog_f77_v"
-(eval echo $as_me:7997: \"$ac_link\") >&5
+(eval echo $as_me:7998: \"$ac_link\") >&5
 ac_f77_v_output=`eval $ac_link 5>&1 2>&1 | grep -v 'Driving:'`
 echo "$ac_f77_v_output" >&5
 FFLAGS=$ac_save_FFLAGS
@@ -8593,8 +8594,10 @@ echo "$as_me:$LINENO: checking whether we have PGPLOT" >&5
 echo $ECHO_N "checking whether we have PGPLOT... $ECHO_C" >&6
 if test -d "$PGPLOT_DIR"; then
     pgplot_dir="$PGPLOT_DIR"
+    echo "$as_me:$LINENO: result: yes, found \$PGPLOT_DIR=$PGPLOT_DIR" >&5
+echo "${ECHO_T}yes, found \$PGPLOT_DIR=$PGPLOT_DIR" >&6
 else
-    for dir in /usr/lib/pgplot /usr/local/pgplot /usr/local/lib/pgplot /opt/pgplot
+    for dir in lib /usr/lib/pgplot /usr/local/lib/pgplot /usr/local/pgplot /opt/pgplot
     do
         if test -f $dir/grfont.dat; then
             pgplot_dir="$dir"
@@ -8613,26 +8616,21 @@ fi;
 
 yapp_default="ps"
 if test x$pgplot_config_prefix != x; then
-        if test -f ${pgplot_config_prefix}/grfont.dat ; then
-		PGPLOT_DIR="$pgplot_config_prefix"
-
-                PGPLOT_INCLUDE="-I$pgplot_config_prefix"
-                PGPLOT_LIB="-L$pgplot_config_prefix"
-                PGPLOT_LIB="$PGPLOT_LIB -lcpgplot -lpgplot"
-                cat >>confdefs.h <<\_ACEOF
+        if ! test -f ${pgplot_config_prefix}/grfont.dat ; then
+                { echo "$as_me:$LINENO: WARNING: could not find PGPLOT library in $pgplot_dir yet" >&5
+echo "$as_me: WARNING: could not find PGPLOT library in $pgplot_dir yet" >&2;}
+        fi
+	PGPLOT_DIR="$pgplot_config_prefix"
+        PGPLOT_INCLUDE="-I$pgplot_config_prefix"
+        PGPLOT_LIB="-L$pgplot_config_prefix"
+        PGPLOT_LIB="$PGPLOT_LIB -lcpgplot -lpgplot"
+        cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBPGPLOT 1
 _ACEOF
 
-                graphtype=pgplot
-                echo "$as_me:$LINENO: result: yes, $PGPLOT_DIR" >&5
+        echo "$as_me:$LINENO: result: yes, $PGPLOT_DIR" >&5
 echo "${ECHO_T}yes, $PGPLOT_DIR" >&6
-		yapp_default="pgplot"
-        else
-                echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-                { echo "$as_me:$LINENO: WARNING: could not find PGPLOT library in 1st: $pgplot_dir" >&5
-echo "$as_me: WARNING: could not find PGPLOT library in 1st: $pgplot_dir" >&2;}
-        fi
+	yapp_default="pgplot"
 else
 	{ echo "$as_me:$LINENO: WARNING: could not find PGPLOT library in 2nd: $pgplot_config_prefix" >&5
 echo "$as_me: WARNING: could not find PGPLOT library in 2nd: $pgplot_config_prefix" >&2;}
@@ -8656,6 +8654,10 @@ case $host_os in
 	;;
       solaris*)
 	LOADOBJ_MACH="-Dsun4 -DSOLARIS -DSYSV"
+	LOADOBJ_LIBS=-ldl
+	;;
+      darwin*)
+	LOADOBJ_MACH="-Ddarwin -DDL"
 	LOADOBJ_LIBS=-ldl
         ;;
       irix*)
@@ -13172,7 +13174,18 @@ case $yapp_name in
 	  YAPP_DEF="yapp.ps"
           ;;
 	pgplot)
-	  YAPP_LIBS="-L$PGPLOT_DIR -lpgplot $XLIBS $FLIBS"
+	  if test "$PGPLOT_DIR" = "$NEMOLIB" ; then
+	    YAPP_LIBS="-L\$NEMOLIB -lpgplot $XLIBS $FLIBS"
+	    PGPLOT_DIR="\$NEMOLIB"
+	    { echo "$as_me:$LINENO: WARNING: using dollar" >&5
+echo "$as_me: WARNING: using dollar" >&2;}
+	    echo $PGPLOT_DIR
+	    echo $NEMOLIB
+	  else
+   	    YAPP_LIBS="-L$PGPLOT_DIR -lpgplot $XLIBS $FLIBS"
+	    { echo "$as_me:$LINENO: WARNING: using classic" >&5
+echo "$as_me: WARNING: using classic" >&2;}
+	  fi
 	  YAPP_DEF="/xs"
           ;;
 esac
@@ -13187,6 +13200,10 @@ if test -d "$NEMODAT"; then
   echo "*** Warning: NEMO=$NEMO, maybe you are running NEMO already"
   echo "*** you probably should source $NEMO/nemo_end"
 fi
+
+
+mkdir bin lib obj
+
 
 
                                                   ac_config_files="$ac_config_files NEMORC.gen Makefile makedefs nemo_start nemo.pl"
