@@ -41,7 +41,7 @@ AC_SUBST(NEMOVER)
 
 dnl ---                 Create needed libraries for next step
 for i in bin lib ojb; do
- if [ ! -e $i ]; then
+ if ! test -e $i ; then
    mkdir $i
  fi
 done

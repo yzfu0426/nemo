@@ -1381,7 +1381,7 @@ NEMOVER="`cat VERSION`"
 
 
 for i in bin lib ojb; do
- if  ! -e $i ; then
+ if ! test -e $i ; then
    mkdir $i
  fi
 done
