@@ -74,24 +74,16 @@ c) Installing CFITSIO  (pending work on configure.in)
    fitsio_nemo.c implements the fitsio.c file by providing a wrapper
    that actually calls the CFITSIO library (courtesy Bill Pence)
 
-   wget ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio2420.tar.gz
+   wget ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio2490.tar.gz
    (see http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html)
  
    One way is to embed it into NEMO, so when you configure cfitsio
 
 	configure --prefix=$NEMO
-
-??? REALLY ???
-
-   but that currently does not work yet, so do:
-
-	setenv FTOOLS_INCLUDE $NEMOINC/cfitsio
-	setenv FTOOLS_LIB     $NEMOLIB
-	mkdir $FTOOLS_INCLUDE 
 	make
 	make install
 
-   If you system has FTOOLS installed, possibly via the LHEASOFT package,
+   If your system has FTOOLS installed, possibly via the LHEASOFT package,
    you can use their prefix, e.g.
 
 	nemo% configure --with-cfitsio-prefix=/opt/lheasoft/SunOS_5.6_sparc
