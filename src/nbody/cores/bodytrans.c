@@ -54,6 +54,7 @@
  *  14-feb-04   proper prototypes, updated documentation
  *  21-feb-04   fixed expression->file matching criterion (pretty bad bug)
  *  28-mar-04   V3.2 added extra counter to random name to work around loadobj() problem
+ *                   redirect output of make to a logfile for pipes to work in NEMO
  *
  *  Used environment variables (normally set through .cshrc/NEMORC files)
  *      NEMO        used in case NEMOOBJ was not available
@@ -204,7 +205,7 @@ local proc bodytrans(string type, string expr, string fname)
         fclose(cdstr);
 	cflags = getenv("CFLAGS");
 #if defined(LOADOBJ3)
-        sprintf(cmmd, "cd /tmp;make -f $NEMOLIB/Makefile.lib %s.so",name);
+        sprintf(cmmd, "cd /tmp;make -f $NEMOLIB/Makefile.lib %s.so > $s.log 2>&1",name,name);
 #else
         sprintf(cmmd, "cd /tmp;cc %s -c %s.c",
 		(cflags==NULL) ? "" : cflags,name);
