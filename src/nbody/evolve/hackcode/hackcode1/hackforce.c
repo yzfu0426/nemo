@@ -17,9 +17,11 @@
  *     22-jul-93  V1.5  fixed bug when handling multisnapshots      PJT/JAN
  *	7-aug-94  V1.5a declaration of atof() fails on macro-versions (linux)
  *     20-sep-01      b NULL -> 0
+ *     29-mar-04  V1.6  using 'global' macro to prevent mu;ltiple definitons
  */
 
-#include "defs.h"
+#define global                                  /* don't default to extern  */
+#include "code.h"
 #include <getparam.h>
 #include <filestruct.h>
 #include <extstring.h>
@@ -42,7 +44,7 @@ string defv[] = {		/* DEFAULT INPUT PARAMETERS */
     "rmin=\n    Lower left corner of initial box [default is -rsize/2 (centered)",
     "options=mass,phase\n Output options: phase and/or mass",
     "fcells=0.75\n        Cell/body allocation ratio",
-    "VERSION=1.5b\n       30-sep-01 PJT",
+    "VERSION=1.6\n        29-mar-04 PJT",
     NULL,
 };
 
