@@ -3,6 +3,7 @@
  */
 
 #include "defs.h"
+#include "proto.h"
 #include <getparam.h>
 
 

@@ -11,28 +11,30 @@
 
 #include "code.h"
 #include <filestruct.h>
+#include <history.h>
 
 /*	Snapshot I/O routines - special local one for diagnostics */
 #include <snapshot/snapshot.h>
 #include <snapshot/get_snap.c>
 #define put_snap_diagnostics  my_put_snap_diagnostics
-local put_snap_diagnostics();
+local void put_snap_diagnostics(stream, int *);
 #include <snapshot/put_snap.c>
 
 /* forward declarations: */
-local diagnostics();
+local void diagnostics(void);
+
+extern double cputime(void);
+extern bool scanopt(string,string);
+
 
 /*
  * INPUTDATA: read initial conditions from input file.
  */
 
-inputdata(file)
-string file;			/* input file name */
+inputdata(string file)
 {
     stream instr;
-    string ask_headline();
     int bits;
-    bool scanopt();
     bodyptr p;
 
     instr = stropen(file, "r");			/* open input stream        */
@@ -106,8 +108,6 @@ local bool firstmass = TRUE;	/* if true, output mass data */
 output()
 {
     int nttot, nbavg, ncavg, k, bits;
-    double cputime();
-    bool scanopt();
 
     diagnostics();				/* compute std diagnostics  */
     nttot = n2bcalc + nbccalc;
@@ -154,7 +154,7 @@ output()
  * DIAGNOSTICS: compute set of dynamical diagnostics.
  */
 
-local diagnostics()
+local void diagnostics(void)
 {
     register bodyptr p;
     real velsq;
@@ -197,11 +197,8 @@ local diagnostics()
  * MY_PUT_SNAP_DIAGNOSTICS: output various N-body diagnostics.
  */
 
-local my_put_snap_diagnostics(outstr, ofptr)
-stream outstr;
-int *ofptr;
+local void my_put_snap_diagnostics(stream outstr, int *ofptr)
 {
-    double cputime();
     real cput;
 
     cput = cputime();

@@ -9,7 +9,8 @@
  *     18-jan-94  V1.3   srandom -> set_xrandom()	     pjt 
  *     28-nov-00  documented a memory leak
  *      8-sep-01  init_xrandom
- *     29-mar-04  mac forcing us to use global/extern        pjt
+ *     29-mar-04  MacOS forcing us to use global/extern      pjt
+ *                plus LOTS of prototype cleanup
  */
 
 #define global                                  /* don't default to extern  */
@@ -51,7 +52,7 @@ string usage = "hierarchical N-body code";
 
 string headline = "Hack code";	/* default id for run */
 
-nemo_main()
+void nemo_main(void)
 {
     startrun();					/* set params, input data   */
     initoutput();				/* begin system output      */
@@ -64,7 +65,7 @@ nemo_main()
  * STARTRUN: startup hierarchical N-body code.
  */
 
-startrun()
+void startrun(void)
 {
     string restfile, contfile;
     bool scanopt();
@@ -102,7 +103,7 @@ startrun()
 	    if (nbody < 1)			/*     is value absurd?     */
 		error("startrun: absurd nbody\n");
 	    init_xrandom(getparam("seed"));	/*     set random generator */
-	    testdata(getbparam("cencon"));	/*     make test model      */
+	    make_testdata(getbparam("cencon"));	/*     make test model      */
 	}
 	freq = getdparam("freq");		/*   get various parameters */
 	eps = getdparam("eps");
@@ -119,12 +120,11 @@ startrun()
 }
 
 /*
- * TESTDATA: generate initial conditions for test runs.
+ * MAKE_TESTDATA: generate initial conditions for test runs.
  * NOTE: Should really make a Plummer Model! 
  */
 
-testdata(cencon)
-bool cencon;				/* make concentrated system */
+void make_testdata(bool cencon)			/* make concentrated system */
 {
     vector cmr, cmv;
     register bodyptr p;
@@ -154,7 +154,7 @@ bool cencon;				/* make concentrated system */
  * STEPSYSTEM: advance N-body system one time-step.
  */
 
-stepsystem()
+void stepsystem(void)
 {
     real dthf, dt;
     register bodyptr p;
