@@ -28,7 +28,7 @@ endif
 #     check if the directories exist
 foreach d (bin lib obj) 
   if (! -d $NEMO/$d/$NEMOHOST) then
-    echo No $NEMO/$d/$NEMOHOST
+    echo No $NEMO/$d/$NEMOHOST, maybe your system was already patched for V3.2
     exit 0
   else
     echo Found $NEMO/$d/$NEMOHOST 
@@ -49,6 +49,9 @@ make dirs
 mv host host_31
 
 
+echo ""
+echo "---------------------------------------------------------------------------"
+echo ""
 echo Successfully modified your NEMO tree. Your current shell
 echo does not function anymore, please issue the following
 echo commands:
@@ -59,4 +62,12 @@ echo "   cd $NEMO"
 echo "   source nemo_end"
 echo "   source nemo_start"
 echo ""
+echo You should also look at the output of the command
+echo '   diff $NEMO/makedefs $NEMOLIB'
+echo 'and decide if to copy/modify any, or all, to the $NEMOLIB version'
+echo 'alternatively rerun:'
+echo '   ./configure ....'
+echo '   ./config.status'
+echo ""
+echo "---------------------------------------------------------------------------"
 
