@@ -16,8 +16,9 @@ CHECKDIR1 = data inc news tmp csh \
             adm/import adm/export adm/install adm/submit adm/purge 
 
 # absolute (derived) directories & files
-CHECKDIR2 = $(NEMOBIN) $(NEMOLIB) $(NEMOOBJ) opt opt/include opt/$(NEMOHOST) \
-            $(NEMOOBJ)/bodytrans $(NEMOOBJ)/potential
+CHECKDIR2 = $(NEMOBIN) $(NEMOLIB) $(NEMOOBJ) \
+            $(NEMOOBJ)/bodytrans $(NEMOOBJ)/potential \
+	    opt opt/include opt/lib opt/bin
 
 CHECKFIL2 = $(NEMO)/adm/Usage \
 	    $(NEMO)/adm/install/mknemo.log \
@@ -115,19 +116,6 @@ dirs: nemo_start
 	    mkdir $$i; \
 	    chmod a+w $$i; \
 	fi); done
-#------------------------------------------------- needed vvvvvv ??  should use a new name to detect this old style
-	-@for i in bin lib ; do \
-	(if [ ! -d opt/$(NEMOHOST)/$$i ]; \
-	then \
-	    echo SYMLINK $$i created; \
-	    ln -s $(NEMO)/$$i opt/$(NEMOHOST)/$$i; \
-	fi); done
-	@if [ ! -d opt/$(NEMOHOST)/include ]; \
-	then \
-	    echo SYMLINK include created; \
-	    ln -s $(NEMO)/opt/include opt/$(NEMOHOST)/include; \
-	fi
-#------------------------------------------------- needed ^^^^^^ ??
 	-@for i in $(CHECKFIL2); do \
 	(if [ ! -f $$i ]; then \
 	    echo FILE $$i created; \
