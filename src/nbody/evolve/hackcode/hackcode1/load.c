@@ -10,7 +10,7 @@
  *      28-nov-00 fixed bad index bug in printf() - documented a leak
  */
 
-#include "defs.h"
+#include "code.h"
 
 local cellptr ctab = NULL;	/* cells are allocated from here */
 local int ncell, maxcell;	/* count cells in use, max available */

@@ -9,8 +9,10 @@
  *     18-jan-94  V1.3   srandom -> set_xrandom()	     pjt 
  *     28-nov-00  documented a memory leak
  *      8-sep-01  init_xrandom
+ *     29-mar-04  mac forcing us to use global/extern        pjt
  */
 
+#define global                                  /* don't default to extern  */
 #include "code.h"
 
 string defv[] = {		/* DEFAULT PARAMETER VALUES */
@@ -41,7 +43,7 @@ string defv[] = {		/* DEFAULT PARAMETER VALUES */
     "minor_freqout=32.0\n	  minor data-output frequency ",
 
     "debug=false\n		  turn on debugging messages ",
-    "VERSION=1.3a\n		  8-sep-01 PJT",
+    "VERSION=1.4\n		  29-mar-04 PJT",
     NULL,
 };
 

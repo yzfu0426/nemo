@@ -3,7 +3,7 @@
  *	21-may-92 extra forward decl for SGI
  */
 
-#include "defs.h"
+#include "code.h"
 
 /*
  * HACKGRAV: evaluate grav field at a given particle.

@@ -4,7 +4,7 @@
  *      17-feb-94 fixed bug with -DSINGLEPREC               pjt
  */
 
-#include "defs.h"
+#include "code.h"
 
 /*
  * PICKVEC: generate random coordinates within a unit sphere.
