@@ -60,10 +60,17 @@ endif
 #	IRIX is also particular about MANPATH
 #       Linux needs to have their stuff added back in if none present
 if ($?MANPATH == 0) then
+ if (-e /etc/man.config) then
+   # this works on linux redhat and mandrake....
+   set _mandirs=(`grep -w ^MANPATH /etc/man.config | awk '{print $2}'`)
+ else
+   # try something else 'sensible'
+   set _mandirs=(/usr/man /usr/share/man /usr/local/man /local/man /opt/man /opt/SUNWspro/man /usr/openwin/man)
+ endif
  setenv MANPATH $NEMO/man
- foreach mandir (/usr/man /usr/share/man /usr/local/man /local/man /opt/man /opt/SUNWspro/man /usr/openwin/man)
-   if (-e $mandir) then
-      setenv MANPATH ${MANPATH}:$mandir
+ foreach _mandir ($_mandirs)
+   if (-e $_mandir) then
+      setenv MANPATH ${MANPATH}:$_mandir
    endif
  end
 else
