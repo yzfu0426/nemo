@@ -1,4 +1,4 @@
-VERSION = NEMO V3.2 31-mar-04 PJT
+VERSION = NEMO V3.2 6-apr-04 PJT
 ################################################################################
 # 	$(NEMO)/Makefile: top level Makefile for full NEMO installation
 ################################################################################
@@ -184,7 +184,7 @@ nemo_start:
 	echo 'source $$NEMO/nemo.rc'                      >> nemo_start
 
 start:
-	make nemo_start NEMO=`pwd`
+	$(MAKE) nemo_start NEMO=`pwd`
 
 alias:
 	@echo "# add these lines to your .cshrc file:"
@@ -199,7 +199,7 @@ SCRIPTS =
 scripts:
 	@echo Installing scripts on `date` 
 	@echo By `whoami` on `hostname`
-	(cd $(NEMO)/src/scripts; make install)
+	(cd $(NEMO)/src/scripts; $(MAKE) install)
 
 scripts_old:
 	-@for i in $(SCRIPTS); do \
@@ -369,7 +369,7 @@ dist:
 	fi;
 
 distcvs:
-	make dist DIST_DIR=nemo
+	$(MAKE) dist DIST_DIR=nemo
 
 distu:
 	tar -zcf $(DIST_DIR)_cvs.tar.gz `find . -name Entries -exec src/scripts/cvsutar '{}' \;`
@@ -431,11 +431,11 @@ export:
 
 usrftp:
 	@echo Creating usr tarfile for USR=$(USR)
-	@make tarfile EXPORTA=$(USR) FILE=$(FTPDIR)/$(USRTAR)
+	@$(MAKE) tarfile EXPORTA=$(USR) FILE=$(FTPDIR)/$(USRTAR)
 
 ftp:
 	@echo Working from FTPDIR=$(FTPDIR) :;df -k $(FTPDIR)
-	@make tarfile "SRC=$(SRC)" "USR=$(USR)" FILE=$(FTPDIR)/$(NEMOTAR)
+	@$(MAKE) tarfile "SRC=$(SRC)" "USR=$(USR)" FILE=$(FTPDIR)/$(NEMOTAR)
 	@echo Compressing
 	@$(COMPRESS) $(FTPDIR)/$(NEMOTAR)
 	@cp VERSION src/scripts/bootstrap README $(FTPDIR)
@@ -455,12 +455,12 @@ stamp:
 	@echo "   src/scripts/version inc"
 
 ftp_patch:
-	tar cvf $(FTPDIR)/$(PATCHTAR) `make new CHKFILE=$(CHKFILE)`
+	tar cvf $(FTPDIR)/$(PATCHTAR) `$(MAKE) new CHKFILE=$(CHKFILE)`
 	@echo "<A HREF=ftp://ftp.astro.umd.edu/pub/nemo/$(PATCHTAR)> $(PATCHTAR) </A>"  > $(WWWDIR)/lastpatch
 	@echo "(`date`)" >> $(WWWDIR)/lastpatch
 
 new_patch:
-	@make new CHKFILE=$(FTPDIR)/$(PATCHTAR)
+	@$(MAKE) new CHKFILE=$(FTPDIR)/$(PATCHTAR)
 
 new_time:
 	@echo "`cat $(NEMO)/VERSION` `date +%m%d%H%M%y` `whoami` `date`" >> $(CHKFILE)
@@ -480,35 +480,35 @@ new_ftp:
 
 tarkernel:
 	@echo KERNEL+SCRIPTS only for small bootstrap
-	@make tarfile ASCIIDIRS="inc src/kernel src/scripts" FILE=kernel.tar
+	@$(MAKE) tarfile ASCIIDIRS="inc src/kernel src/scripts" FILE=kernel.tar
 	@$(COMPRESS) kernel.tar
 	@echo All done
 	@ls -l kernel.tar*
 
 tarnbody:
 	@echo NBODY only 
-	@make tarfile ASCIIDIRS="src/nbody" FILE=nbody.tar
+	@$(MAKE) tarfile ASCIIDIRS="src/nbody" FILE=nbody.tar
 	@$(COMPRESS) nbody.tar
 	@echo All done
 	@ls -l nbody.tar*
 
 tarorbit:
 	@echo ORBIT only 
-	@make tarfile ASCIIDIRS="src/orbit" FILE=orbit.tar
+	@$(MAKE) tarfile ASCIIDIRS="src/orbit" FILE=orbit.tar
 	@$(COMPRESS) orbit.tar
 	@echo All done
 	@ls -l orbit.tar*
 
 tarman:
 	@echo MAN only 
-	@make tarfile ASCIIDIRS= FILE=man.tar \
+	@$(MAKE) tarfile ASCIIDIRS= FILE=man.tar \
            ASCIIFILES="man/man? man/Makefile man/tmac.an man/w*"
 	@$(COMPRESS) man.tar
 	@echo All done
 	@ls -l man.tar*
 
 tarbima: 
-	make tarfile FILE=checker.tar \
+	$(MAKE) tarfile FILE=checker.tar \
 	 "ASCIIDIRS=inc usr/bima\
 	  src/Makefile src/kernel/Makefile \
 	  src/kernel/io src/kernel/core src/kernel/misc src/scripts \
@@ -561,13 +561,13 @@ purge:
 miriad:
 	@echo "Installing miriad shells..."
 	(cd $(NEMO)/src/tools/miriad/miriad;\
-	 $(MAKE) miriad ; mv miriad $(NEMOBIN); make clean)
+	 $(MAKE) miriad ; mv miriad $(NEMOBIN); $(MAKE) clean)
 	(cd $(NEMO)/src/tools/miriad/mirtool;\
-	 $(MAKE) nemotool ; mv nemotool $(NEMOBIN); make clean)
+	 $(MAKE) nemotool ; mv nemotool $(NEMOBIN); $(MAKE) clean)
 
 makeindex:
 	@echo "Installing makeindex utility for LaTeX manuals"	(cd $(NEMO)/src/tools/makeindex;\
-	 make;mv indexsrc/index $(NEMOBIN)/makeindex;make clean)
+	 $(MAKE);mv indexsrc/index $(NEMOBIN)/makeindex;$(MAKE) clean)
 
 #	internal PGPLOT install
 pgplot:
@@ -655,11 +655,11 @@ cleanall:
 	rm -rf $(CLEAN)
 
 cleansrc:
-	(cd src; make clean)
+	(cd src; $(MAKE) clean)
 
 libs:
 	@echo Starting at `date`, tail -f $(NEMO)/install.log
-	cd src;make -i clean install > ../install.log 2>&1 
+	cd src;$(MAKE) -i clean install > ../install.log 2>&1 
 	@echo Done at `date`
 
 bins:
