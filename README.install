@@ -416,3 +416,30 @@ before the
 
 
 
+
+-- upgrading 3.1 -> 3.2
+
+
+If you are using CVS (or a tar file) to upgrade an existing NEMO installation,
+you must follow the following directions. Otherwise the safer route is to install
+NEMO from scratch again.
+
+For those who upgrade, you will probably do the following:
+
+    cd $NEMO
+    cvs update         # you will see lots of messages
+                       # the file "VERSION" should now read 3.2.1
+    nemo.32            # this will warn you that you current NEMO is unusable
+    omen               # unload the current dis-functional NEMO
+    nemo               # and load it back in
+
+this probably will work. To make sure see if you can compile, in fact you
+should, since some library routines have been fixed:
+ 
+    make libs
+    mknemo tsf         # test if a simple program recompiles ok
+    mknemo snapplot    # test if a pgplot based program compiles ok
+
+if this all worked, probably it meant the transition to 3.2.1 was good. if not,
+changes in the $NEMOLIB/makedefs file and/or NEMORC.local may be needed. Please
+consult the installation procedure how to proceed on these.
