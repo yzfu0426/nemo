@@ -4,11 +4,14 @@
 #   where NEMO/{lib,bin,obj} do not have the NEMOHOST subdirectories
 #   anymore. (as developed on branchname: NemoHost3)
 #
-#   28-mar-04   Created   -   Peter Teuben  
+#   28-mar-04   Created                      -   Peter Teuben  
+#    4-apr-04   protect against re-(ab)use       PJT
 #
 
+set version=10-apr-04
 
 #     check NEMO, bail if not
+echo nemo.32 patch script: version=$version
 if ($?NEMO == 0) then
   echo No NEMO environment present yet
   exit 0
