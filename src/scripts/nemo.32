@@ -1,0 +1,43 @@
+#! /bin/csh -f
+#
+#   Conversion script from versions before nemo.32 to nemo.32
+#   where NEMO/{lib,bin,obj} do not have the NEMOHOST subdirectories
+#   anymore.
+#
+#   28-mar-04   Created   -   Peter Teuben  
+#
+
+if ($?NEMO == 0) then
+  echo No NEMO environment present yet
+  exit 0
+else
+  echo Found NEMO=$NEMO
+endif
+
+foreach d (bin lib obj) 
+  if (! -d $NEMO/$d/$NEMOHOST) then
+    echo No $NEMO/$d/$NEMOHOST
+    exit 0
+  else
+    echo Found $NEMO/$d/$NEMOHOST 
+  endif
+end
+
+
+foreach d (bin lib obj) 
+  mv $NEMO/$d/$NEMOHOST/* $NEMO/$d
+  rmdir $NEMO/$d/$NEMOHOST
+end
+
+
+echo Successfully modified your NEMO tree. Your current shell
+echo does not function anymore, please issue the following
+echo commands:
+echo "   omen"
+echo "   nemo"
+echo or:
+echo "   cd $NEMO"
+echo "   source nemo_end"
+echo "   source nemo_start"
+echo ""
+
