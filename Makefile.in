@@ -122,7 +122,7 @@ dirs: nemo_start
 	    touch $$i; \
 	    chmod a+w $$i; \
 	fi); done
-	@if [ ! -f include ]; then \
+	@if [ ! -d include ]; then \
 	    ln -s inc include; \
 	fi
 	@if [ ! -f $(TIMESTAMP) ]; then \
