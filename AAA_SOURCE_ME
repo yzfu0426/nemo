@@ -1,6 +1,11 @@
 #
 # Source this file to install and build NEMO from scratch with 'manybody'
 #
+# In order to get a distribution to get a easy PGPLOT enabled version do e.g.
+#	cvs co nemo
+#	cd nemo; mkdir local; cd local; cvs co pgplot
+#       source AAA_SOURCE_ME
+#
 # to clean up the cloest approach is:
 #	make distclean          # cleans most of the things created
 #	omen                    # remove NEMO* and YAPP* things, cleans the path
@@ -54,7 +59,7 @@ endif
 rehash
 echo '++++++++++++++++++++++++++++++++++++++++' >>& install.log
 
-echo Building NEMO library \(this may take a few minutes\)...
+echo Building NEMO library 
 (cd src; make clean install) >>& install.log
 if ($status) then
     @ stat++
