@@ -1,3 +1,18 @@
+Remaining MacOSX problems:
+  - configure leaves -lcrt.o etc. in, so they need manual removal
+    from makedefs and NEMORC.gen before continuing on
+
+  - src/nbody/evolve/aarseth/nbody0/Makefile
+	need to activate F77LIBS to include -lcc_dynamic
+
+  - directcode doesn't compile since it was derived from an earlier
+    release of hackcode1 with the multiple externs included by the
+    linker
+
+
+-------------------------------------------------------------------------------
+
+
 for 3.2.0
   - make sure cfitsio stuff is ok in configure
   - the change in get_atable() should mean routines need to work
@@ -8,8 +23,7 @@ for 3.2.0
 	(fmath in potential not needed)
 	(some potential/data not needed)
   - intel linker problems (use different technique to force loading?)
-  - allow a pgplot internal install without running configure twice
-  - get a mini-NEMO going 
+  - get a mini-NEMO going (Dehnen, BIMA/CARMA)
 
 --------------------------------------------------------------------------------
 

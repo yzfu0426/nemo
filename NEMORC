@@ -122,9 +122,16 @@ unset v
 # compatibilty check
 
 if (-d $NEMO/host) then
-  echo '*** You still have a $NEMO/host directory, suggestive that you have        ***'
-  echo '*** not made the change to version 3.2.x and above where we use $NEMO/opt  ***'
-  echo "*** for NEMO=$NEMO"
+  echo '***                                                                          ***'
+  echo '*** You (still) have a $NEMO/host directory, suggestive that you have        ***'
+  echo '*** not made the official change to version 3.2.x and above where $NEMO/opt  ***'
+  echo "*** is used. Your NEMO=$NEMO"
+  echo '***                                                                          ***'
+  echo '*** Your NEMO may well not work anymore. The suggested fix it to run the     ***'
+  echo '*** patch script:         src/scripts/nemo.32          to convert your tree  ***'
+  echo '*** This is not fool proof and may require you to edit NEMORC.local and/or   ***'
+  echo '*** $NEMOLIB/makedefs manually                                               ***'
+  echo '***                                                                          ***'
 endif
 
 end:
