@@ -1,9 +1,11 @@
 #
-# Source this file to install and build NEMO from scratch with 'manybody'
+# Source this file to install and build NEMO from scratch (manybody method)
 #
-# In order to get a distribution to get a easy PGPLOT enabled version do e.g.
+# In order to get a distribution to get an easy PGPLOT enabled version you
+# need a NEMO/local/pgplot source directory, e.g. via the following method:
 #	cvs co nemo
-#	cd nemo; mkdir local; cd local; cvs co pgplot
+#	cd nemo
+#	mkdir local; cd local; cvs co pgplot; cd ..
 #       source AAA_SOURCE_ME
 #
 # to clean up the cloest approach is:
@@ -43,7 +45,7 @@ if (-d local/pgplot) then
     echo Postconfig
     make postconfig >>& install.log
     source NEMORC.local
-    echo Installing pgplot 
+    echo Installing pgplot library
     make pgplot >>& install.log
 else
     echo "Running configure with full autodetection (good luck)"
@@ -83,6 +85,7 @@ if (0) then
   ( cd usr/dehnen/falcON; make ; make $fbins; cd $arch; cp $fbins $NEMOBIN)  >& install_falcON.log
 endif
 
+if ($stat == 0) then
     echo "Note: Although your current shell now has the NEMO environment loaded,"
     echo "      new shells will not have NEMO pre-loaded. You would need to add"
     echo "      the following command/alias to your .cshrc (or equivalent) file:"
@@ -92,3 +95,5 @@ else
     echo Install failed: stat = $stat
 endif
 
+
+grep TESTSUITE: install.log | grep -v OK
